@@ -20,6 +20,7 @@ package org.apache.catalina.util;
 
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Properties;
 
 import org.apache.tomcat.util.ExceptionUtils;
@@ -59,21 +60,22 @@ public class ServerInfo {
         String number = null;
 
         Properties props = new Properties();
+        Date date = new Date();
         try (InputStream is = ServerInfo.class.getResourceAsStream
                 ("/org/apache/catalina/util/ServerInfo.properties")) {
             props.load(is);
-            info = props.getProperty("server.info");
-            built = props.getProperty("server.built");
-            number = props.getProperty("server.number");
+            info = props.getProperty("${server.info}");
+            built = props.getProperty("${server.built}");
+            number = props.getProperty("${server.number}");
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
         }
         if (info == null)
-            info = "Apache Tomcat 8.5.x-dev";
+            info = "Apache Tomcat/8.5.42";
         if (built == null)
-            built = "unknown";
+            built = ""+date;
         if (number == null)
-            number = "8.5.x";
+            number = "8.5.42";
 
         serverInfo = info;
         serverBuilt = built;
