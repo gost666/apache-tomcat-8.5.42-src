@@ -46,6 +46,11 @@ import javax.servlet.UnavailableException;
  *
  * @author Craig R. McClanahan
  */
+
+/**
+ * Wrapper作用:
+ * 1.表示一个Servlet,Wrapper作为容器中的最底层,不能包含子容器
+ */
 public interface Wrapper extends Container {
 
     /**

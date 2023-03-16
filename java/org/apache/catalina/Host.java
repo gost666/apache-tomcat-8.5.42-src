@@ -43,6 +43,11 @@ import java.util.regex.Pattern;
  *
  * @author Craig R. McClanahan
  */
+
+/**
+ * Host作用:
+ * 1.代表一个虚拟主机,或者一个站点,可以给Tomcat配置多个虚拟主机地址,而一个虚拟主机下可包含多个Context
+ */
 public interface Host extends Container {
 
 

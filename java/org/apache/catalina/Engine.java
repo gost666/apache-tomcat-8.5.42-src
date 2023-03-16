@@ -40,6 +40,11 @@ package org.apache.catalina;
  *
  * @author Craig R. McClanahan
  */
+
+/**
+ * Engine作用:
+ * 1.表示整个Catalina的Servlet引擎,用来管理多个虚拟站点,一个Service最多只能有五钻Engine,但是一个引擎可包含多个Host
+ */
 public interface Engine extends Container {
 
     /**

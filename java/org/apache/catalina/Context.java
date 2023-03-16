@@ -58,6 +58,11 @@ import org.apache.tomcat.util.http.CookieProcessor;
  *
  * @author Craig R. McClanahan
  */
+
+/**
+ * Context作用:
+ * 表示一个Web应用程序,一个Web应用可包含多个Wrapper
+ */
 public interface Context extends Container, ContextBind {
 
 
