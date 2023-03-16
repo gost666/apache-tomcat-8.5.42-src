@@ -33,6 +33,20 @@ import org.apache.tomcat.util.net.SSLHostConfig;
  * @author Costin Manolache
  * @see Adapter
  */
+
+/**
+ * ProtocolHandler作用:
+ * 1.Coyote协议接口,通过Endpoint和Processor实现针对具体协议的处理能力
+ *
+ * Tomcat按照协议和I/O提供了不同的实现类:
+ *  AjpNioProtocol
+ *  AjpAprProtocol
+ *  AjpNio2Protocol
+ *  Http11NioProtocol(默认)
+ *  Http11AprProtocol
+ *  Http11Nio2Protocol
+ *  可以在 conf/server.xml 中具体配置,如果安装了APR,那么将使用Http11AprProtocol,否则使用Http11NioProtocol
+ */
 public interface ProtocolHandler {
 
     /**

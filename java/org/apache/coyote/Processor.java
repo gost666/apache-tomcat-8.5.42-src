@@ -27,6 +27,12 @@ import org.apache.tomcat.util.net.SocketWrapperBase;
 /**
  * Common interface for processors of all protocols.
  */
+
+/**
+ * Processor作用:
+ * 1.Coyote协议处理接口,用来实现HTTP/AJP协议
+ * 2.接收来自Endpoint的Socket，读取字节流解析成Tomcat Request和Response对象,并通过Adapter将其提交到容器处理,Processor是对应用层协议的抽象
+ */
 public interface Processor {
 
     /**

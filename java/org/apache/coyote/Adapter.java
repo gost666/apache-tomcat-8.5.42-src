@@ -25,6 +25,12 @@ import org.apache.tomcat.util.net.SocketEvent;
  * @author Remy Maucherat
  * @see ProtocolHandler
  */
+
+/**
+ * 由于协议不同,客户端发过来的请求信息各不相同,Tomcat定义了自己的Request类来"存放"这些请求信息.
+ * ProtocolHandler接口负责解析请求并生成Tomcat Request类.但这个Request对象不是标准的ServletRequest,也就不能使用Tomcat Request作为参数来调用容器
+ * 连接器调用CoyoteAdapter.service(org.apache.coyote.Request req, org.apache.coyote.Response res)方法,将Tomcat Request转换成ServletRequest再调用容器的service方法 ===>>>适配器模式应用
+ */
 public interface Adapter {
 
     /**
