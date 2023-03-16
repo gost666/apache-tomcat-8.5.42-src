@@ -46,6 +46,12 @@ import org.apache.catalina.startup.Catalina;
  *
  * @author Craig R. McClanahan
  */
+
+/**
+ * Server作用:
+ * 1.服务器表示整个Catalina Servlet容器以及其它组件,负责组装并启动Servlet引擎、Tomcat连接器。
+ * 2.通过实现Lifecycle接口,提供了一种优雅的启动和关闭整个系统的方式
+ */
 public interface Server extends Lifecycle {
 
     // ------------------------------------------------------------- Properties

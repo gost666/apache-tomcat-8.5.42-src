@@ -69,6 +69,11 @@ import org.xml.sax.SAXParseException;
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  */
+
+/**
+ * Catalina作用:
+ * 1.负责解析Tomcat的配置文件,以此来创建Server组件,并根据命令来对其进行管理
+ */
 public class Catalina {
 
 

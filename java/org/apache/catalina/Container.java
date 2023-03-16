@@ -76,6 +76,11 @@ import org.apache.juli.logging.Log;
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  */
+
+/**
+ * Container作用:
+ * 1.容器;负责处理用户有Servlet请求,并返回对象给web用户的模块
+ */
 public interface Container extends Lifecycle {
 
 

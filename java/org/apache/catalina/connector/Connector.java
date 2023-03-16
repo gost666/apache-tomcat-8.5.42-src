@@ -52,6 +52,11 @@ import org.apache.tomcat.util.res.StringManager;
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  */
+
+/**
+ * Connector作用:
+ * 1.连接器;处理与客户端有通信,负责接收客户请求,然后转给相关的容器处理,最后向客户返回响应结果
+ */
 public class Connector extends LifecycleMBeanBase  {
 
     private static final Log log = LogFactory.getLog(Connector.class);

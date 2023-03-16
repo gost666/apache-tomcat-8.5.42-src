@@ -33,6 +33,12 @@ import org.apache.catalina.mapper.Mapper;
  *
  * @author Craig R. McClanahan
  */
+
+/**
+ * Service作用:
+ * 1.服务是Server内部组件,一个Server包含多个Service.
+ * 2.它将多个Connector组件绑定到一个Container(Engine)上
+ */
 public interface Service extends Lifecycle {
 
     // ------------------------------------------------------------- Properties
