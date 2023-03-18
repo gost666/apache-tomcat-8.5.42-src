@@ -534,7 +534,7 @@ public class Catalina {
      * Start a new server instance.
      */
     public void load() {
-
+        System.out.println("====>>4<<Catalina.load(args)====");
         if (loaded) {
             return;
         }
@@ -548,7 +548,8 @@ public class Catalina {
         initNaming();
 
         // Create and execute our Digester
-        Digester digester = createStartDigester();
+        System.out.println("通过创建Digester对象准备解析Tomcat中的xml文件 >>>> Before");
+        Digester digester = createStartDigester();//Digester是Tomcat的xml文件解析工具
 
         InputSource inputSource = null;
         InputStream inputStream = null;
@@ -676,7 +677,7 @@ public class Catalina {
      * Start a new server instance.
      */
     public void start() {
-
+        System.out.println("====>>11<<Catalina.start()====");
         if (getServer() == null) {
             load();
         }

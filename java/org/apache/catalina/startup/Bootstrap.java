@@ -253,7 +253,7 @@ public final class Bootstrap {
      * @throws Exception Fatal initialization error
      */
     public void init() throws Exception {
-
+        System.out.println("====>>2<< Bootstrap.init()====");
         initClassLoaders();
 
         Thread.currentThread().setContextClassLoader(catalinaLoader);
@@ -278,7 +278,7 @@ public final class Bootstrap {
             startupInstance.getClass().getMethod(methodName, paramTypes);
         method.invoke(startupInstance, paramValues);
 
-        catalinaDaemon = startupInstance;
+        catalinaDaemon = startupInstance;//将通过反射创建的Catalina对象赋给Object
 
     }
 
@@ -288,7 +288,7 @@ public final class Bootstrap {
      */
     private void load(String[] arguments)
         throws Exception {
-
+        System.out.println("====>>3<<Bootstrap.load(args)====");
         // Call the load() method
         String methodName = "load";
         Object param[];
@@ -306,7 +306,7 @@ public final class Bootstrap {
             catalinaDaemon.getClass().getMethod(methodName, paramTypes);
         if (log.isDebugEnabled())
             log.debug("Calling startup class " + method);
-        method.invoke(catalinaDaemon, param);
+        method.invoke(catalinaDaemon, param);//相当于catalina.load(args)
 
     }
 
@@ -347,10 +347,11 @@ public final class Bootstrap {
      */
     public void start()
         throws Exception {
+        System.out.println("====>>10<<Bootstrap.start()====");
         if( catalinaDaemon==null ) init();
 
         Method method = catalinaDaemon.getClass().getMethod("start", (Class [] )null);
-        method.invoke(catalinaDaemon, (Object [])null);
+        method.invoke(catalinaDaemon, (Object [])null);//相当于catalina.start()
 
     }
 
@@ -455,12 +456,12 @@ public final class Bootstrap {
      * @param args Command line arguments to be processed
      */
     public static void main(String args[]) {
-
+        System.out.println("====>>1<< Tomcat 启动入口====");
         if (daemon == null) {
             // Don't set daemon until init() has completed
             Bootstrap bootstrap = new Bootstrap();
             try {
-                bootstrap.init();
+                bootstrap.init();//1.该init()主要作用通过反射创建Catalina对象
             } catch (Throwable t) {
                 handleThrowable(t);
                 t.printStackTrace();

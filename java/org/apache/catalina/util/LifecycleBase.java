@@ -147,7 +147,7 @@ public abstract class LifecycleBase implements Lifecycle {
 
         try {
             setStateInternal(LifecycleState.STARTING_PREP, null, false);
-            startInternal();
+            startInternal();//protected abstract void startInternal() throws LifecycleException;此处将方法抽象出来 ===>>>  模板方法设计模式
             if (state.equals(LifecycleState.FAILED)) {
                 // This is a 'controlled' failure. The component put itself into the
                 // FAILED state so call stop() to complete the clean-up.

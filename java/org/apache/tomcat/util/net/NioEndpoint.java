@@ -211,7 +211,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
      */
     @Override
     public void bind() throws Exception {
-
+        System.out.println("====>>9<<Endpoint.bind() 进行Socket连接====");
         if (!getUseInheritedChannel()) {
             serverSock = ServerSocketChannel.open();
             socketProperties.setProperties(serverSock.socket());
@@ -251,7 +251,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
      */
     @Override
     public void startInternal() throws Exception {
-
+        System.out.println("====>>16<<Endpoint.start()====");
         if (!running) {
             running = true;
             paused = false;
@@ -280,7 +280,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                 pollerThread.start();
             }
 
-            startAcceptorThreads();
+            startAcceptorThreads();//开启接收请求的线程
         }
     }
 
@@ -450,7 +450,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
 
         @Override
         public void run() {
-
+            System.out.println("====>>17<<Nio Socket绑定端口:"+getPort()+";接收请求====");
             int errorDelay = 0;
 
             // Loop until we receive a shutdown command
@@ -479,7 +479,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                     try {
                         // Accept the next incoming connection from the server
                         // socket
-                        socket = serverSock.accept();
+                        socket = serverSock.accept();//接收客户端请求
                     } catch (IOException ioe) {
                         // We didn't get a socket
                         countDownConnection();

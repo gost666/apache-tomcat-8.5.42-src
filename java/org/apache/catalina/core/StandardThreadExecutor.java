@@ -116,6 +116,7 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
     @Override
     protected void startInternal() throws LifecycleException {
 
+        System.out.println("====>>13.2<<Executor.start()====");
         taskqueue = new TaskQueue(maxQueueSize);
         TaskThreadFactory tf = new TaskThreadFactory(namePrefix,daemon,getThreadPriority());
         executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(), maxIdleTime, TimeUnit.MILLISECONDS,taskqueue, tf);

@@ -411,7 +411,7 @@ public class StandardService extends LifecycleMBeanBase implements Service {
      */
     @Override
     protected void startInternal() throws LifecycleException {
-
+        System.out.println("====>>13<<Service.start()====");
         if(log.isInfoEnabled())
             log.info(sm.getString("standardService.start.name", this.name));
         setState(LifecycleState.STARTING);
@@ -527,7 +527,7 @@ public class StandardService extends LifecycleMBeanBase implements Service {
      */
     @Override
     protected void initInternal() throws LifecycleException {
-
+        System.out.println("====>>6<<Service.init()====");
         super.initInternal();
 
         if (engine != null) {

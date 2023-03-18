@@ -1116,6 +1116,7 @@ public abstract class AbstractEndpoint<S> {
     public abstract void stopInternal() throws Exception;
 
     public void init() throws Exception {
+        System.out.println("====>>8<<Endpoint.init()====");
         if (bindOnInit) {
             bind();
             bindState = BindState.BOUND_ON_INIT;
@@ -1189,6 +1190,7 @@ public abstract class AbstractEndpoint<S> {
 
 
     public final void start() throws Exception {
+        System.out.println("====>>15<<Endpoint.start()====");
         if (bindState == BindState.UNBOUND) {
             bind();
             bindState = BindState.BOUND_ON_START;
