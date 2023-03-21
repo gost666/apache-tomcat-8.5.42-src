@@ -623,7 +623,7 @@ public abstract class HttpServlet extends GenericServlet {
      */
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
-
+        System.out.println("====>>31<<根据获取到请求的方法执行不同的方法====");
         String method = req.getMethod();
 
         if (method.equals(METHOD_GET)) {

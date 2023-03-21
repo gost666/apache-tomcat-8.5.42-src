@@ -1079,6 +1079,7 @@ public abstract class AbstractEndpoint<S> {
             }
             Executor executor = getExecutor();
             if (dispatch && executor != null) {
+                System.out.println("====>>20<<将连接交给线程池Executor处理,开始执行请求响应任务====");
                 executor.execute(sc);
             } else {
                 sc.run();

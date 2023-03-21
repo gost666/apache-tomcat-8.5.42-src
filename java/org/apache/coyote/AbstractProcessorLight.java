@@ -40,7 +40,7 @@ public abstract class AbstractProcessorLight implements Processor {
     @Override
     public SocketState process(SocketWrapperBase<?> socketWrapper, SocketEvent status)
             throws IOException {
-
+        System.out.println("====>>22.1<<Processor组件读取消息报文,解析请求行、请求体、封装成Request对象====");
         SocketState state = SocketState.CLOSED;
         Iterator<DispatchType> dispatches = null;
         do {

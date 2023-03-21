@@ -299,7 +299,7 @@ public class CoyoteAdapter implements Adapter {
     @Override
     public void service(org.apache.coyote.Request req, org.apache.coyote.Response res)
             throws Exception {
-
+        System.out.println("====>>23<<CoyoteAdaptor组件负责将Connector组件和Engine容器关联起来,把生成的Request对象和响应对象Response传递到Engine容器中,调用Pipeline====");
         Request request = (Request) req.getNote(ADAPTER_NOTES);
         Response response = (Response) res.getNote(ADAPTER_NOTES);
 
@@ -340,6 +340,15 @@ public class CoyoteAdapter implements Adapter {
                 request.setAsyncSupported(
                         connector.getService().getContainer().getPipeline().isAsyncSupported());
                 // Calling the container
+                System.out.println("====>>24<<调用Catalina容器===");
+                /**
+                 * 在Tomcat中定义了 Pipeline 和 Valve 两个接口,Pipeline用于构建责任链,后者代表责任链一的每个处理器.
+                 * Pipeline中维护了一个基础的 Valve ,它始终位于 Pipeline 的未端(最后执行),封装了具体的请求和输出响应的过程.
+                 * 也可以调用 addValve(),为 Pipeline添加其他的 Valve,后添加的 Valve位于基础的Valve之前,并按照添加顺序执行.
+                 * Pipeline 通过获得首个 Valve来启动整合链条执行
+                 *
+                 * 涉及到 ==>>  责任链模式
+                 */
                 connector.getService().getContainer().getPipeline().getFirst().invoke(
                         request, response);
             }

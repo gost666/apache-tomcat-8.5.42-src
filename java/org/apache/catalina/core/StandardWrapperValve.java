@@ -92,7 +92,7 @@ final class StandardWrapperValve
     @Override
     public final void invoke(Request request, Response response)
         throws IOException, ServletException {
-
+        System.out.println("====>>28<<通过Pipeline调用StandardWrapperValve====");
         // Initialize local variables we may need
         boolean unavailable = false;
         Throwable throwable = null;
@@ -169,6 +169,7 @@ final class StandardWrapperValve
         request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR,
                 requestPathMB);
         // Create the filter chain for this request
+        System.out.println("====>>30<<<<将获取到的Servlet封装到ApplicationFilterChain对象中====");
         ApplicationFilterChain filterChain =
                 ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);
 

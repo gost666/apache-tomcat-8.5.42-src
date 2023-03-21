@@ -61,7 +61,7 @@ final class StandardContextValve extends ValveBase {
     @Override
     public final void invoke(Request request, Response response)
         throws IOException, ServletException {
-
+        System.out.println("====>>27<<通过Pipeline调用StandardContextValve====");
         // Disallow any direct access to resources under WEB-INF or META-INF
         MessageBytes requestPathMB = request.getRequestPathMB();
         if ((requestPathMB.startsWithIgnoreCase("/META-INF/", 0))
