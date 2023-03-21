@@ -19,16 +19,26 @@
      define subcomponents such as "Valves" at this level.
      Documentation at /docs/config/server.html
  -->
+ <!-- server.xml配置参考 https://tomcat.apache.org/tomcat-8.5-doc/config/index.html -->
+ <!--
+	server.xml是Tomcat服务器核心配置文件,包含了Tomcat的Servlet容器(Catalina)的所有配置
+ -->
+ <!-- port: Tomcat监听的关闭服务器的端口, shutdown:关闭服务器的指令字符串-->
 <Server port="8005" shutdown="SHUTDOWN">
+  <!-- 用于以日志的形式输出服务器、操作系统、JVM的版本信息 -->
   <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
   <!-- Security listener. Documentation at /docs/config/listeners.html
   <Listener className="org.apache.catalina.security.SecurityListener" />
   -->
   <!--APR library loader. Documentation at /docs/apr.html -->
+  <!--用于加载(服务器启动)和销毁(服务器停止) APR. 如果找不到APR库,则会输出日志.不影响Tomcat启动 -->
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
   <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+  <!--用于避免JRE内存泄漏问题-->
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <!-- 用于加载(服务器启动)和销毁(服务器停止) 全局命名服务 -->
   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <!-- 用于在Context停止时重建Executor池中的线程,以避免ThreadLocal相关的内存泄漏 -->
   <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
 
   <!-- Global JNDI resources
@@ -54,9 +64,29 @@
 
     <!--The connectors can use a shared executor, you can define one or more named thread pools-->
     <!--
-    <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
-        maxThreads="150" minSpareThreads="4"/>
+      Executor属性说明:
+        name:线程池名称,用于Connector中指定
+        namePrefix:所创建的每个线程的名称前缀,一个单独的线程名称为 namePrefix + threadNumber
+        maxThreads:池中最大线程数
+        minSpareThreads:活跃线程数(核心线程数,不会销毁,一直存在)
+        maxIdleTime:线程空闲时间,超过该时间后,空闲线程会被销毁,默认值为6000(1分钟),单位ms
+        maxQueueSize:在被执行前最大线程数目,默认为Int的最大值
+        prestartminSpareThreads:是否在Executor启动时,就生成minSpareThreads这个线程,默认false
+        threadPriority:Executor内线程的优先级,默认为5,1-10
+        className:指定实现org.apache.catalina.Executor接口的实现类,默认为 org.apache.catalina.core.StandardThreadExecutor
+        threadRenewalDelay:重建线程的时间间隔,默认1000,单位ms,设置为负则不重建
     -->
+
+    <Executor name="tomcatThreadPool"
+              namePrefix="catalina-exec-"
+              maxThreads="200"
+              minSpareThreads="100"
+              maxIdleTime="6000"
+              maxQueueSize="Integer.MAX_VALUE"
+              prestartminSpareThreads="false"
+              threadPriority="5"
+              className="org.apache.catalina.core.StandardThreadExecutor"
+    />
 
 
     <!-- A "Connector" represents an endpoint by which requests are received
@@ -66,9 +96,34 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
-    <Connector port="8080" protocol="HTTP/1.1"
+
+    <!--
+      Connector属性说明:
+        port:端口号,Connector用于创建Socket并进行监听,以等待客户端请求链接.如果该属性设置为0,Tomcat将会随机选择一个可用端口号给当前Connector使用
+        protocol:当前Connector支持的访问协议,默认为 HTTP/1.1.并采用自动切换机制选择一个基于 Java NIO 的链接器或者基于本地APR的链接器(根据本地是否含有Tomcat的本地库判定)
+        如果不希望采用上述自动切换机制,而是明确指定协议,可以采用以下值:
+
+          Http协议:
+          org.apache.coyote.http11.Http11NioProtocol  : 非阻塞式 Java Nio链接器
+          org.apache.coyote.http11.Http11Nio2Protocol : 非阻塞式 Java Nio2链接器
+          org.apache.coyote.http11.Http11AprProtocol  : APR链接器
+
+          AJP协议:
+          org.apache.coyote.ajp.AjpNioProtocol  : 非阻塞式 Java Nio链接器
+          org.apache.coyote.ajp.AjpNio2Protocol : 非阻塞式 Java Nio2链接器
+          org.apache.coyote.ajp.AjpAprProtocol  : APR链接器
+
+        connectionTimeout:Connector接收链接后等待超时时间,单位ms,-1表示不超时
+        redirectPort:当前Connector不支持SSL请求,接收到了一个请求,并且也符合 security-constraint 约束,需要SSL传输,Catalina自动将请求重定向到指定的端口
+        executor:指定共享线程池的名称,也可以通过 maxThreads、minSpareThreads等属性配置内部线程池
+        URIEncoding:用于指定编码URI的字符编码,Tomcat8.x版本默认的编码为 UTF-8,Tomcat7.x版本默认的编码为 ISO-8859-1
+    -->
+    <Connector port="8080"
+               protocol="HTTP/1.1"
                connectionTimeout="20000"
-               redirectPort="8443" />
+               redirectPort="8443"
+               executor="tomcatThreadPool"
+    />
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -145,6 +200,13 @@
                resourceName="UserDatabase"/>
       </Realm>
 
+      <!--
+        Host属性说明:
+          name:当前Host通用的网络地址,必须与DNS服务器上注册信息一致.Engine中包含的Host必须存在一个名称与Engine的defaultHost设置一致
+          appBase:当前Host的应用基础目录,当前Host上部署的Web应用均在该目录下,默认为webapps
+          unpackWARs:设置为ture,Host在启动时会将appBase目录下的war包解压为目录;设置false,Host将直接从war文件启动
+          autoDeploy:控制Tomcat是否在运行时定期检测并启动部署新增或变更的web应用
+      -->
       <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
 
@@ -160,6 +222,16 @@
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log" suffix=".txt"
                pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+        <!--
+        Context属性说明:
+          docBase:Web应用目录或者War包的部署路径,可以是绝对路径,也可以是相对于Host appBase的相对路径
+          path:Web应用的Context路径.如果Host名为 localhost,则该web应用访问 根路径为: http://localhost:8080/myApp
+
+          <Context docBase="myApp" path="/myApp">
+              ....
+          </Context>
+        -->
+
 
       </Host>
     </Engine>
