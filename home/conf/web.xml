@@ -259,6 +259,11 @@
             <param-name>xpoweredBy</param-name>
             <param-value>false</param-value>
         </init-param>
+        <!--设置通过Jasper引擎将 xxx.jsp文件生成的 xxx.java和 xxx.class文件的存放目录-->
+        <init-param>
+            <param-name>scratchdir</param-name>
+            <param-value>D:/tmp/jsp</param-value>
+        </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
 
