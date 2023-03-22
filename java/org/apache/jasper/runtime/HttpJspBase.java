@@ -67,6 +67,7 @@ public abstract class HttpJspBase extends HttpServlet implements HttpJspPage {
     public final void service(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
+        System.out.println("====>><<调用生成的servlet中的_jspService方法====");
         _jspService(request, response);
     }
 

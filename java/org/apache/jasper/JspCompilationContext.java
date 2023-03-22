@@ -584,6 +584,7 @@ public class JspCompilationContext {
     // ==================== Compile and reload ====================
 
     public void compile() throws JasperException, FileNotFoundException {
+        System.out.println("====>>36<<调用JspCompilationContext.compile()====");
         createCompiler();
         if (jspCompiler.isOutDated()) {
             if (isRemoved()) {
@@ -592,7 +593,7 @@ public class JspCompilationContext {
             try {
                 jspCompiler.removeGeneratedFiles();
                 jspLoader = null;
-                jspCompiler.compile();
+                jspCompiler.compile();//JDTCompiler.compile();
                 jsw.setReload(true);
                 jsw.setCompilationException(null);
             } catch (JasperException ex) {

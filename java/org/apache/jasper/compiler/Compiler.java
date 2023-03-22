@@ -370,11 +370,25 @@ public abstract class Compiler {
         }
 
         try {
+            System.out.println("====>>37<<生成java文件====");
+            /**
+             * 1.如果在 web.xml中配置了参数 scratchdir ,则jsp编译后的结果,就会存储在该目录下
+             * <init-param>
+             *     <param-name>scratchdir</param-name>
+             *     <param-value>D:/tmp/jsp</param-value>
+             * </init-param>
+             *
+             * 2.如果没有配置该选项,则会将编译后的结果,存储在Tomcat安装目录下: work/Catalina/localhost/项目名称
+             *
+             * 3.如果使用的是IDEA开发工具集成Tomcat访问web工程中的jsp,编译后的结果存储在以下目录:
+             *  C:\Users\llabo\AppData\Local\JetBrains\IntelliJIdea2021.1\tomcat\d67887ae-22d0-4ef0-8121-191726db74bd\work
+             */
             String[] smap = generateJava();
             File javaFile = new File(ctxt.getServletJavaFileName());
             Long jspLastModified = ctxt.getLastModified(ctxt.getJspFile());
             javaFile.setLastModified(jspLastModified.longValue());
             if (compileClass) {
+                System.out.println("====>>38<<生成class文件====");
                 generateClass(smap);
                 // Fix for bugzilla 41606
                 // Set JspServletWrapper.servletClassLastModifiedTime after successful compile
