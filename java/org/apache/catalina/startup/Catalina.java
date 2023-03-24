@@ -276,14 +276,14 @@ public class Catalina {
 
 
     /**
-     * Create and configure the Digester we will be using for startup.
+     * Create and configure the Digester we will be using for startup.(创建并配置我们将用于启动的Digester。)
      * @return the main digester to parse server.xml
      */
     protected Digester createStartDigester() {
         long t1=System.currentTimeMillis();
         // Initialize the digester
         Digester digester = new Digester();
-        digester.setValidating(false);
+        digester.setValidating(false);//默认值为:false,是否需要用DTD验证XML文档的合法性
         digester.setRulesValidation(true);
         Map<Class<?>, List<String>> fakeAttributes = new HashMap<>();
         List<String> objectAttrs = new ArrayList<>();
@@ -297,10 +297,13 @@ public class Catalina {
         digester.setUseContextClassLoader(true);
 
         // Configure the actions we will be using
+        //对象创建规则
         digester.addObjectCreate("Server",
                                  "org.apache.catalina.core.StandardServer",
                                  "className");
+        //属性设置规则
         digester.addSetProperties("Server");
+        //设置下一个规则
         digester.addSetNext("Server",
                             "setServer",
                             "org.apache.catalina.Server");
@@ -346,7 +349,7 @@ public class Catalina {
                             "addExecutor",
                             "org.apache.catalina.Executor");
 
-
+        //自定义规则
         digester.addRule("Server/Service/Connector",
                          new ConnectorCreateRule());
         digester.addRule("Server/Service/Connector",
@@ -401,6 +404,7 @@ public class Catalina {
                             "org.apache.coyote.UpgradeProtocol");
 
         // Add RuleSets for nested elements
+        //自定义规则集
         digester.addRuleSet(new NamingRuleSet("Server/GlobalNamingResources/"));
         digester.addRuleSet(new EngineRuleSet("Server/Service/"));
         digester.addRuleSet(new HostRuleSet("Server/Service/Engine/"));

@@ -1575,7 +1575,7 @@ public class Digester extends DefaultHandler2 {
 
 
     /**
-     * <p>Register a new Rule matching the specified pattern.
+     * <p>Register a new Rule matching the specified pattern.(注册一个匹配指定模式的新规则)
      * This method sets the <code>Digester</code> property on the rule.</p>
      *
      * @param pattern Element matching pattern
@@ -1690,11 +1690,11 @@ public class Digester extends DefaultHandler2 {
 
 
     /**
-     * Add an "object create" rule for the specified parameters.
+     * Add an "object create" rule for the specified parameters.(为指定的参数添加“对象创建”规则。)
      *
-     * @param pattern Element matching pattern
-     * @param className Default Java class name to be created
-     * @param attributeName Attribute name that optionally overrides
+     * @param pattern Element matching pattern(元素匹配模式)
+     * @param className Default Java class name to be created(要创建的默认Java类名)
+     * @param attributeName Attribute name that optionally overrides(可选地覆盖的属性名称)
      *  the default Java class name to be created
      * @see ObjectCreateRule
      */

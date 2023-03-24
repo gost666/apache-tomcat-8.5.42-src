@@ -47,7 +47,7 @@ public class ObjectCreateRule extends Rule {
 
 
     /**
-     * Construct an object create rule with the specified class name and an
+     * Construct an object create rule with the specified class name and an (构造一个对象创建规则，使用指定的类名和包含重写的可选属性名。)
      * optional attribute name containing an override.
      *
      * @param className Java class name of the object to be created
