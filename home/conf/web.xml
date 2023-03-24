@@ -109,6 +109,7 @@
         </init-param>
         <init-param>
             <param-name>listings</param-name>
+            <!-- true:表示文件目录显示在web页面上-->
             <param-value>false</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
