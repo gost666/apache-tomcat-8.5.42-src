@@ -62,15 +62,26 @@ public final class Bootstrap {
     private static final Pattern PATH_PATTERN = Pattern.compile("(\".*?\")|(([^,])*)");
 
     static {
+        System.out.println("====>><< Tomcat 开始初始化项目路径====");
         // Will always be non-null
+        // userDir = F:\Source\apache-tomcat-8.5.42-src
         String userDir = System.getProperty("user.dir");
 
         // Home first
+
+        //在 Add Tomcat VM Options参数中配置的路径:
+        // -Dcatalina.home=F:\Source\apache-tomcat-8.5.42-src\home
+        // -Dcatalina.base=F:\Source\apache-tomcat-8.5.42-src\home
+        // -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+        // -Djava.util.logging.config.file=F:\Source\apache-tomcat-8.5.42-src\home\conf\logging.properties
+
+        // home = F:\Source\apache-tomcat-8.5.42-src\home
         String home = System.getProperty(Globals.CATALINA_HOME_PROP);
         File homeFile = null;
 
         if (home != null) {
             File f = new File(home);
+
             try {
                 homeFile = f.getCanonicalFile();
             } catch (IOException ioe) {
@@ -143,12 +154,15 @@ public final class Bootstrap {
 
     private void initClassLoaders() {
         try {
+            System.out.println("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 common.loader 对应的键值属性====");
             commonLoader = createClassLoader("common", null);
             if( commonLoader == null ) {
                 // no config file, default to this loader - we might be in a 'single' env.
                 commonLoader=this.getClass().getClassLoader();
             }
+            System.out.println("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 server.loader 对应的键值属性====");
             catalinaLoader = createClassLoader("server", commonLoader);
+            System.out.println("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 shared.loader 对应的键值属性====");
             sharedLoader = createClassLoader("shared", commonLoader);
         } catch (Throwable t) {
             handleThrowable(t);
@@ -162,6 +176,8 @@ public final class Bootstrap {
         throws Exception {
 
         String value = CatalinaProperties.getProperty(name + ".loader");
+        //"${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
+        System.out.println("value:"+value);
         if ((value == null) || (value.equals("")))
             return parent;
 
@@ -203,14 +219,14 @@ public final class Bootstrap {
 
 
     /**
-     * System property replacement in the given string.
+     * System property replacement in the given string.(给定字符串替换系统中的属性)
      *
      * @param str The original string
      * @return the modified string
      */
     protected String replace(String str) {
-        // Implementation is copied from ClassLoaderLogManager.replace(),
-        // but added special processing for catalina.home and catalina.base.
+        // Implementation is copied from ClassLoaderLogManager.replace(),(实现复制了 ClassLoaderLogManager.replace() )
+        // but added special processing for catalina.home and catalina.base.(但为 catalina.home and catalina.base 添加了特殊的处理)
         String result = str;
         int pos_start = str.indexOf("${");
         if (pos_start >= 0) {
@@ -223,17 +239,21 @@ public final class Bootstrap {
                     pos_end = pos_start - 1;
                     break;
                 }
+                // propName = catalina.base
                 String propName = str.substring(pos_start + 2, pos_end);
+                //特殊处理部分=====STAR======
                 String replacement;
                 if (propName.length() == 0) {
                     replacement = null;
                 } else if (Globals.CATALINA_HOME_PROP.equals(propName)) {
+                    // replacement = F:\Source\apache-tomcat-8.5.42-src\home
                     replacement = getCatalinaHome();
                 } else if (Globals.CATALINA_BASE_PROP.equals(propName)) {
                     replacement = getCatalinaBase();
                 } else {
                     replacement = System.getProperty(propName);
                 }
+                //特殊处理部分=====END======
                 if (replacement != null) {
                     builder.append(replacement);
                 } else {
