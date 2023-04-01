@@ -175,6 +175,7 @@ public final class Bootstrap {
     private ClassLoader createClassLoader(String name, ClassLoader parent)
         throws Exception {
 
+        System.out.println("====>><<创建类加载器====");
         String value = CatalinaProperties.getProperty(name + ".loader");
         //"${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
         System.out.println("value:"+value);

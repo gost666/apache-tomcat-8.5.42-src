@@ -59,6 +59,7 @@ public class CatalinaProperties {
      */
     private static void loadProperties() {
 
+        System.out.println("====>><<加载catalina.properties配置文件====");
         InputStream is = null;
         try {
             String configUrl = System.getProperty("catalina.config");
