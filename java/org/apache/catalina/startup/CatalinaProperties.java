@@ -71,6 +71,7 @@ public class CatalinaProperties {
 
         if (is == null) {
             try {
+                //在 Add Tomcat VM Options参数中配置的路径:
                 File home = new File(Bootstrap.getCatalinaBase());
                 File conf = new File(home, "conf");
                 File propsFile = new File(conf, "catalina.properties");
@@ -113,11 +114,25 @@ public class CatalinaProperties {
         }
 
         // Register the properties as system properties
+        //将属性注册为系统属性,Enumeration是Hashtable的内部类
+        /**
+         * properties.propertyNames():
+         *  返回此属性列表中所有键的枚举,如果尚未从主属性列表中找到名称相同的键,则在默认属性列表中包含不同的键.
+         *  Return:此属性列表中所有键枚举,包括默认值中的键
+         */
         Enumeration<?> enumeration = properties.propertyNames();
+        /**
+         * 测试该枚举是否包含更多元素.
+         * <code>true</code> if and only if this enumeration object
+         *   contains at least one more element to provide;
+         *   <code>false</code> otherwise.
+         */
         while (enumeration.hasMoreElements()) {
+            System.out.println("====>><<依次遍历 catalina.properties 中所有的属性=="+enumeration.nextElement());
             String name = (String) enumeration.nextElement();
             String value = properties.getProperty(name);
             if (value != null) {
+                //将 catalina.properties 中对应的属性值设置为系统的属性值
                 System.setProperty(name, value);
             }
         }
