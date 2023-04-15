@@ -204,6 +204,12 @@ public class CatalinaProperties {
                  *
                  * 其中 LineReader 为 Properties的一个内部类:具体操作如下
                  */
+                //byte[] inByteBuf = new byte[8192]; //inByteBuf.length = 8192
+                //System.out.println(":::"+is.read(new byte[8192]));-1
+                //inLimit = (inStream==null) ? reader.read(inCharBuf) : inStream.read(inByteBuf); inLimit = -1
+                //System.out.println(true || false);//true
+                //char c = (char) (0xff & inByteBuf[inOff++]);
+                //System.out.println("====:"+(char)(0xff & inByteBuf[0]));//相当于读取配置文件的第一个字符====:0
             } catch (Throwable t) {
                 handleThrowable(t);
                 log.warn(t);
