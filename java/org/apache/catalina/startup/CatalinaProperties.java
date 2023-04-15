@@ -21,11 +21,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Properties;
 
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.apache.tools.ant.taskdefs.Java;
 
 
 /**
@@ -95,6 +97,113 @@ public class CatalinaProperties {
             try {
                 properties = new Properties();
                 properties.load(is);
+
+                /**
+                 * 测试 Properties.load0(new LineReader(inStream)) 中的 new LineReader(inStream)参数
+                 * 内部类创建对象的方式:
+                 *  //方式一
+                 *  OuterClass.InnerClass oi = new OuterClass().new InnerClass();
+                 *  //方式二
+                 *  OuterClass o = new OuterClass();
+                 *  OuterClass.InnerClass i = o.new InnerClass();
+                 *
+                 *  内部类分类:静态内部类和非静态内部类(成员内部类,方法内部类,匿名内部类)
+                 *  区别:
+                 *                              静态内部类       非静态内部类
+                 *  是否可以有静态成员变量             是               否
+                 *  是否可以访问外部类的非静态变量      否               是
+                 *  是否可以访问外部类的静态变量       是               是
+                 *  创建是否依赖于外部类             否               是
+                 *
+                 *
+                 * 内部类与外部类的关系:
+                 *  a.对于非静态内部类,内部类的创建依赖外部类的实例对象,在没有外部类实例之前是无法创建内部类的
+                 *  b.内部类是一个相对独立的实体,与外部类不是 is-a 关系
+                 *  c.创建内部类的时刻并不依赖于外部类的创建
+                 *
+                 * 内部类作用:
+                 * 1、内部类方法可以访问该类定义所在作用域中的数据,包括被private修饰的私有数据(内部类无条件访问外部类数据)
+                 * public class DataOuterClass{
+                 *     private String data = "外部类数据";
+                 *     private class InnerClass{
+                 *         public InnerClass(){
+                 *             System.out.println(data);
+                 *         }
+                 *     }
+                 *     public void getInner(){
+                 *         new InnerClass();
+                 *     }
+                 *     public static void main(String args){
+                 *         DataOuterClass OuterClass = new  DataOuterClass();
+                 *         OuterClass.getInner();//外部类数据
+                 *     }
+                 * }
+                 *
+                 * 2、内部类可以对同一包中的其他类型隐藏(普通类不能使用 private,protected修饰;当内部类实现某个接口的时候,在向上转型,对外部来说就完全隐藏了接口的实现)
+                 * 接口:
+                 * public interface InnerInterface{
+                 *     void innerMethod();
+                 * }
+                 * 具体类:
+                 * public class OuterClass{
+                 *     //private修饰内部类实现隐藏信息细节
+                 *     private class InnerClass implements InnerInterface{
+                 *          public void innerMethod(){
+                 *              System.out.println("实现内部类隐藏");
+                 *          }
+                 *     }
+                 *     public InnerInterface getInner(){
+                 *         return new InnerClass();
+                 *     }
+                 * }
+                 * 测试类:
+                 * public class Test{
+                 *     public static void main(String args){
+                 *         OuterClass outerClass = new OuterClass();
+                 *         InnerInterface inner = outerClass.getInner();
+                 *         inner.innerMethod();//实现内部类隐藏
+                 *     }
+                 * }
+                 *
+                 * 3、可以解决java中单继承缺陷
+                 * public class ExampleOne{
+                 *     public String name(){
+                 *         return "inner";
+                 *     }
+                 * }
+                 * public class ExampleTwo{
+                 *     public int age(){
+                 *         return 25;
+                 *     }
+                 * }
+                 * public class MainExample{
+                 *     //内部类1继承 ExampleOne
+                 *     private class InnerOne extends ExampleOne{
+                 *         return super.name();
+                 *     }
+                 *     //内部类2继承 ExampleTwo
+                 *     private class InnerTwo extends ExampleTwo{
+                 *         public int age(){
+                 *             return super.age();
+                 *         }
+                 *     }
+                 *    public String name(){
+                 *        return new InnerOne().name();
+                 *    }
+                 *    public int age(){
+                 *        return new InnerTwo().age();
+                 *    }
+                 *    public static void main(String args){
+                 *        MainExample mi = new MainExample();
+                 *        System.out.println("姓名:"+ mi.name());
+                 *        System.out.println("年龄:"+ mi.age());
+                 *    }
+                 * }
+                 *
+                 * 4、可以使用匿名内部类实现回调函数
+                 *
+                 * 其中 LineReader 为 Properties的一个内部类:具体操作如下
+                 */
             } catch (Throwable t) {
                 handleThrowable(t);
                 log.warn(t);
