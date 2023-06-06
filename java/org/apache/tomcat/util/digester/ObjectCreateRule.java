@@ -23,6 +23,7 @@ import org.xml.sax.Attributes;
 
 
 /**
+ * 创建新对象并将其推送到对象堆栈的规则实现.当元素完成时，对象将弹出
  * Rule implementation that creates a new object and pushes it
  * onto the object stack.  When the element is complete, the
  * object will be popped
@@ -51,7 +52,7 @@ public class ObjectCreateRule extends Rule {
      * optional attribute name containing an override.
      *
      * @param className Java class name of the object to be created
-     * @param attributeName Attribute name which, if present, contains an
+     * @param attributeName Attribute name which, if present, contains an(属性名称，如果存在，则包含)
      *  override of the class name to create
      */
     public ObjectCreateRule(String className,

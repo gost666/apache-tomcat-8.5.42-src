@@ -25,16 +25,20 @@ import java.util.List;
 
 
 /**
+ * 支持标准规则匹配行为的规则接口的默认实现。此类还可以用作专用 Rules 实现的基类
  * <p>Default implementation of the <code>Rules</code> interface that supports
  * the standard rule matching behavior.  This class can also be used as a
  * base class for specialized <code>Rules</code> implementations.</p>
  *
+ * 此类实现的匹配策略支持两种不同类型的模式匹配规则
  * <p>The matching policies implemented by this class support two different
  * types of pattern matching rules:</p>
  * <ul>
+ *     1.完全匹配
  * <li><em>Exact Match</em> - A pattern "a/b/c" exactly matches a
  *     <code>&lt;c&gt;</code> element, nested inside a <code>&lt;b&gt;</code>
  *     element, which is nested inside an <code>&lt;a&gt;</code> element.</li>
+ *     2.不完全匹配
  * <li><em>Tail Match</em> - A pattern "&#42;/a/b" matches a
  *     <code>&lt;b&gt;</code> element, nested inside an <code>&lt;a&gt;</code>
  *      element, no matter how deeply the pair is nested.</li>
