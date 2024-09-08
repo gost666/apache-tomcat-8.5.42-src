@@ -61,11 +61,12 @@ public class nettyServer {
             bootstrap.group(bossGroup, workerGroup)//设置两个线程组
                     .channel(NioServerSocketChannel.class)//使用NioServerSocketChannel作为服务器的通道实现
                     .option(ChannelOption.SO_BACKLOG, 128)//设置线程队列得到连接个数;用来给ServerChannel添加配置
+                    .handler(null)//该handler在bossGroup生效
                     .childOption(ChannelOption.SO_KEEPALIVE, true)//设置保持活动连接的状态;用来给接收到的通道添加配置
                     //.handler(null)//该handler对应的是bossGroup,childHandle对应的是workerGroup
                     .childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道初始化对象(匿名对象);设置业务处理类
                         @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
+                        protected void initChannel(SocketChannel ch) throws Exception {//该handler在workerGroup生效
                             /**
                              * 可以使用一个集合管理SocketChannel,再推送消息时,可以将业务加入到各个channel对应的NIOEventLoop的taskQueue或者scheduleTaskQueue
                              */
