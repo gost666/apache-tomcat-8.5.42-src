@@ -2,11 +2,10 @@ package testNetty.server;
 
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.MappedByteBuffer;
@@ -30,6 +29,9 @@ public class NIOServer {
      * 1.Channel可以同时进行读写,而流只能读或者只能写
      * 2.通道可以实现异步读写数据
      * 3.可以从缓冲Buffer读数据,也可以写数据到Buffer
+     *
+     * SocketChannel:网络IO通道,具体负责进行读写操作,NIO把缓冲区的数据写入通道,或者把通道里的数据读到缓冲区
+     * ServerSocketChannel:在服务器端监听新的客户端Socket连接
      */
     @Test
     public void testNIOBuffer() {
@@ -267,6 +269,55 @@ public class NIOServer {
                 //手动从集合中移除SelectionKey,防止重复
                 KeyIterator.remove();
             }
+        }
+    }
+
+    /**
+     * 零拷贝基本介绍:
+     * 在Java中常用零拷贝有mmap(内存映射)和sendfile
+     * 零拷贝在NIO中应用:
+     * DMA(direct memory access):直接内存拷贝不使用CPU
+     * DMA和sendfile区别:
+     * 1.mmap适合小数据量读写,sendfile适合大文件传输
+     * 2.mmap需要4次上下文切换,3次数据拷贝,sendfile需要3次上下文切换,最少2次数据拷贝
+     * 3.sendfile可以利用DMA方式,减少CPU拷贝,mmap则不能(必须从内核拷贝到Socket缓冲区)
+     */
+    @Test
+    public void testOldServer()throws IOException{
+        ServerSocket serverSocket = new ServerSocket(7001);
+        while (true){
+            Socket socket = serverSocket.accept();
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+            try {
+                byte[] bytes = new byte[4096];
+                while (true){
+                    int readCount = dataInputStream.read(bytes, 0, bytes.length);
+                    if (readCount == -1){
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Test
+    public void testNewServer() throws IOException {
+        InetSocketAddress address = new InetSocketAddress(7001);
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        ServerSocket serverSocket = serverSocketChannel.socket();
+        serverSocket.bind(address);
+        ByteBuffer buffer = ByteBuffer.allocate(4096);
+        SocketChannel socketChannel = serverSocketChannel.accept();
+        int readCOunt = 0;
+        while (-1 != readCOunt) {
+            try {
+                readCOunt = socketChannel.read(buffer);
+            } catch (IOException e) {
+                break;
+            }
+            buffer.rewind();
         }
     }
 }

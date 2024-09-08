@@ -2,8 +2,13 @@ package testNetty.client;
 
 import org.junit.Test;
 
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
 
 public class NIOClient {
@@ -22,5 +27,39 @@ public class NIOClient {
         ByteBuffer byteBuffer = ByteBuffer.wrap(str.getBytes(),0,str.length());
         socketChannel.write(byteBuffer);
         System.in.read();
+    }
+
+    @Test
+    public void testOldClient() throws IOException {
+        Socket socket = new Socket("localhost", 7001);
+        String fileName = "";
+        FileInputStream inputStream = new FileInputStream(fileName);
+        DataOutputStream dataInputStream = new DataOutputStream(socket.getOutputStream());
+        byte[] buffer = new byte[4096];
+        long readCount;
+        long total = 0;
+        long starTime = System.currentTimeMillis();
+        while ((readCount = inputStream.read(buffer)) > 0) {
+            total += readCount;
+            dataInputStream.write(buffer);
+        }
+        System.out.println("发送总字节数:" + total + ",耗时:" + (System.currentTimeMillis() - starTime));
+        dataInputStream.close();
+        socket.close();
+        inputStream.close();
+    }
+
+    @Test
+    public void testNewClient() throws IOException {
+        SocketChannel socketChannel = SocketChannel.open();
+        socketChannel.connect(new InetSocketAddress("localhost", 7001));
+        String fileName = "";
+        FileChannel fileChannel = new FileInputStream(fileName).getChannel();
+        long starTime = System.currentTimeMillis();
+        //Linux下transferTo()就可以完成传输
+        //Windows下一次调用transferTo()只能发送8M,就需要分段传输文件,而且要主要传输和位置
+        long transferCount = fileChannel.transferTo(0, fileChannel.size(), socketChannel);
+        System.out.println("发送总字节数:" + transferCount + ",耗时:" + (System.currentTimeMillis() - starTime));
+        fileChannel.close();
     }
 }
