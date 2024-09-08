@@ -26,6 +26,8 @@ import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.res.StringManager;
 
@@ -39,6 +41,7 @@ import org.apache.tomcat.util.res.StringManager;
  * @author Craig R. McClanahan
  */
 final class StandardContextValve extends ValveBase {
+    private static final Log log = LogFactory.getLog(StandardContextValve.class);
 
     private static final StringManager sm = StringManager.getManager(StandardContextValve.class);
 
@@ -61,7 +64,7 @@ final class StandardContextValve extends ValveBase {
     @Override
     public final void invoke(Request request, Response response)
         throws IOException, ServletException {
-        System.out.println("====>>27<<通过Pipeline调用StandardContextValve====");
+        log.info("====>>27<<通过Pipeline调用StandardContextValve====");
         // Disallow any direct access to resources under WEB-INF or META-INF
         MessageBytes requestPathMB = request.getRequestPathMB();
         if ((requestPathMB.startsWithIgnoreCase("/META-INF/", 0))

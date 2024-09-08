@@ -280,7 +280,7 @@ public class JspServlet extends HttpServlet implements PeriodicEventListener {
     @Override
     public void service (HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("====>>31<<调用JspServlet,开始解析JSP文件,再获取JSP文件路径");
+        log.info("====>>31<<调用JspServlet,开始解析JSP文件,再获取JSP文件路径");
         // jspFile may be configured as an init-param for this servlet instance
         String jspUri = jspFile;
 
@@ -308,7 +308,7 @@ public class JspServlet extends HttpServlet implements PeriodicEventListener {
                  * RequestDispatcher.include(). Reconstruct its path from the
                  * request's getServletPath() and getPathInfo()
                  */
-                System.out.println("====>>31<<从web.xml中的 <welcome-file-list> 依次获取到index.jsp====");
+                log.info("====>>31<<从web.xml中的 <welcome-file-list> 依次获取到index.jsp====");
                 jspUri = request.getServletPath();
                 String pathInfo = request.getPathInfo();
                 if (pathInfo != null) {
@@ -327,7 +327,7 @@ public class JspServlet extends HttpServlet implements PeriodicEventListener {
         }
 
         try {
-            System.out.println("====>>33<<判定是否是预编译请求====");
+            log.info("====>>33<<判定是否是预编译请求====");
             boolean precompile = preCompile(request);
             serviceJspFile(request, response, jspUri, precompile);
         } catch (RuntimeException e) {
@@ -365,7 +365,7 @@ public class JspServlet extends HttpServlet implements PeriodicEventListener {
                                 HttpServletResponse response, String jspUri,
                                 boolean precompile)
         throws ServletException, IOException {
-        System.out.println("====>>34<<获取到一个JspServletWrapper对象的service方法====");
+        log.info("====>>34<<获取到一个JspServletWrapper对象的service方法====");
         JspServletWrapper wrapper = rctxt.getWrapper(jspUri);
         if (wrapper == null) {
             synchronized(this) {

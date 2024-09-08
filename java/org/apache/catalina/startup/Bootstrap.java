@@ -62,7 +62,7 @@ public final class Bootstrap {
     private static final Pattern PATH_PATTERN = Pattern.compile("(\".*?\")|(([^,])*)");
 
     static {
-        System.out.println("====>><< Tomcat 开始初始化项目路径====");
+        log.info("====>><< Tomcat 开始初始化项目路径====");
         // Will always be non-null
         // userDir = F:\Source\apache-tomcat-8.5.42-src
         String userDir = System.getProperty("user.dir");
@@ -157,15 +157,15 @@ public final class Bootstrap {
 
     private void initClassLoaders() {
         try {
-            System.out.println("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 common.loader 对应的键值属性====");
+            log.info("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 common.loader 对应的键值属性====");
             commonLoader = createClassLoader("common", null);
             if( commonLoader == null ) {
                 // no config file, default to this loader - we might be in a 'single' env.
                 commonLoader=this.getClass().getClassLoader();
             }
-            System.out.println("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 server.loader 对应的键值属性====");
+            log.info("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 server.loader 对应的键值属性====");
             catalinaLoader = createClassLoader("server", commonLoader);
-            System.out.println("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 shared.loader 对应的键值属性====");
+            log.info("====>><<读取 F:\\Source\\apache-tomcat-8.5.42-src\\home\\conf\\catalina.properties中 shared.loader 对应的键值属性====");
             sharedLoader = createClassLoader("shared", commonLoader);
         } catch (Throwable t) {
             handleThrowable(t);
@@ -178,10 +178,10 @@ public final class Bootstrap {
     private ClassLoader createClassLoader(String name, ClassLoader parent)
         throws Exception {
 
-        System.out.println("====>>3<<创建类加载器====");
+        log.info("====>>3<<创建类加载器====");
         String value = CatalinaProperties.getProperty(name + ".loader");
         //"${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
-        System.out.println("value:"+value);
+        log.info("value:"+value);
         if ((value == null) || (value.equals("")))
             return parent;
 
@@ -282,7 +282,7 @@ public final class Bootstrap {
      * @throws Exception Fatal initialization error
      */
     public void init() throws Exception {
-        System.out.println("====>>2<< Bootstrap.init()====");
+        log.info("====>>2<< Bootstrap.init()====");
         initClassLoaders();
 
         Thread.currentThread().setContextClassLoader(catalinaLoader);
@@ -317,7 +317,7 @@ public final class Bootstrap {
      */
     private void load(String[] arguments)
         throws Exception {
-        System.out.println("====>>3<<Bootstrap.load(args)====");
+        log.info("====>>3<<Bootstrap.load(args)====");
         // Call the load() method
         String methodName = "load";
         Object param[];
@@ -376,7 +376,7 @@ public final class Bootstrap {
      */
     public void start()
         throws Exception {
-        System.out.println("====>>10<<Bootstrap.start()====");
+        log.info("====>>10<<Bootstrap.start()====");
         if( catalinaDaemon==null ) init();
 
         Method method = catalinaDaemon.getClass().getMethod("start", (Class [] )null);
@@ -485,7 +485,7 @@ public final class Bootstrap {
      * @param args Command line arguments to be processed
      */
     public static void main(String args[]) {
-        System.out.println("====>>1<< Tomcat 启动入口====");
+        log.info("====>>1<< Tomcat 启动入口====");
         if (daemon == null) {
             // Don't set daemon until init() has completed
             Bootstrap bootstrap = new Bootstrap();

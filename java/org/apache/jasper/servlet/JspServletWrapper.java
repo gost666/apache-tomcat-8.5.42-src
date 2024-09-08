@@ -371,7 +371,7 @@ public class JspServletWrapper {
         Servlet servlet;
 
         try {
-            System.out.println("====校验文件是否存在的信息====");
+            log.info("====校验文件是否存在的信息====");
             if (ctxt.isRemoved()) {
                 throw new FileNotFoundException(jspUri);
             }
@@ -410,7 +410,7 @@ public class JspServletWrapper {
             /*
              * (2) (Re)load servlet class file
              */
-            System.out.println("====>>37<<调用生成的class文件获取servlet====");
+            log.info("====>>37<<调用生成的class文件获取servlet====");
             servlet = getServlet();
 
             // If a page is to be precompiled only, return.
@@ -474,7 +474,7 @@ public class JspServletWrapper {
                    servlet.service(request, response);
                 }
             } else {
-                System.out.println("====>>38<<执行生成的servlet的service方法====");
+                log.info("====>>38<<执行生成的servlet的service方法====");
                 servlet.service(request, response);
             }
         } catch (UnavailableException ex) {

@@ -22,11 +22,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Random;
 
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.junit.Test;
 
 import org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer;
 
 public class CreateTestTable extends DefaultTestCase {
+    private static final Log log = LogFactory.getLog(CreateTestTable.class);
 
     public static volatile boolean recreate = Boolean.getBoolean("recreate");
 
@@ -55,7 +58,7 @@ public class CreateTestTable extends DefaultTestCase {
                 count = rs.getInt(1);
             rs.close();
             st.close();
-            System.out.println("Count:"+count);
+            log.info("Count:"+count);
         }catch (Exception ignore) {}
         con.close();
         return count;
@@ -66,7 +69,7 @@ public class CreateTestTable extends DefaultTestCase {
         int count = 100000;
         int actual = testCheckData();
         if (actual>=count) {
-            System.out.println("Test tables has "+actual+" rows of data. No need to populate.");
+            log.info("Test tables has "+actual+" rows of data. No need to populate.");
             return;
         }
 
