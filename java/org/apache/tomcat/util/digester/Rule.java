@@ -19,6 +19,7 @@ package org.apache.tomcat.util.digester;
 import org.xml.sax.Attributes;
 
 /**
+ * 此类的具体实现实现了在匹配 XML 元素的相应嵌套模式时要执行的操作。
  * Concrete implementations of this class implement actions to be taken when
  * a corresponding nested pattern of XML elements has been matched.
  */

@@ -24,6 +24,7 @@ import org.xml.sax.Attributes;
 
 
 /**
+ * 基于具有相应名称的属性在堆栈顶部设置对象的属性的规则实现
  * <p>Rule implementation that sets properties on the object at the top of the
  * stack, based on attributes with corresponding names.</p>
  */
@@ -31,14 +32,14 @@ import org.xml.sax.Attributes;
 public class SetPropertiesRule extends Rule {
 
     /**
-     * Process the beginning of this element.
+     * Process the beginning of this element.(处理此元素的开头。)
      *
      * @param namespace the namespace URI of the matching element, or an
      *   empty string if the parser is not namespace aware or the element has
-     *   no namespace
+     *   no namespace(匹配元素的命名空间 URI，如果分析器无法识别命名空间或元素没有命名空间，则为空字符串)
      * @param theName the local name if the parser is namespace aware, or just
-     *   the element name otherwise
-     * @param attributes The attribute list for this element
+     *   the element name otherwise(本地名称（如果解析器是命名空间感知的），否则仅为元素名称)
+     * @param attributes The attribute list for this element(此元素的属性列表)
      */
     @Override
     public void begin(String namespace, String theName, Attributes attributes)

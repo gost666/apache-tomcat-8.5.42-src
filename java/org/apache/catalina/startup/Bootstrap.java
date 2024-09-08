@@ -115,10 +115,12 @@ public final class Bootstrap {
         }
 
         catalinaHomeFile = homeFile;
+        //System.setProperty("catalina.home","F:\\Source\\apache-tomcat-8.5.42-src\\home");
         System.setProperty(
                 Globals.CATALINA_HOME_PROP, catalinaHomeFile.getPath());
 
         // Then base
+        //String base = "F:/Source/apache-tomcat-8.5.42-src/home";
         String base = System.getProperty(Globals.CATALINA_BASE_PROP);
         if (base == null) {
             catalinaBaseFile = catalinaHomeFile;
@@ -133,6 +135,7 @@ public final class Bootstrap {
         }
         System.setProperty(
                 Globals.CATALINA_BASE_PROP, catalinaBaseFile.getPath());
+        //System.setProperty("catalina.base","F:\\Source\\apache-tomcat-8.5.42-src\\home");
     }
 
     // -------------------------------------------------------------- Variables
@@ -175,7 +178,7 @@ public final class Bootstrap {
     private ClassLoader createClassLoader(String name, ClassLoader parent)
         throws Exception {
 
-        System.out.println("====>><<创建类加载器====");
+        System.out.println("====>>3<<创建类加载器====");
         String value = CatalinaProperties.getProperty(name + ".loader");
         //"${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
         System.out.println("value:"+value);
@@ -228,6 +231,7 @@ public final class Bootstrap {
     protected String replace(String str) {
         // Implementation is copied from ClassLoaderLogManager.replace(),(实现复制了 ClassLoaderLogManager.replace() )
         // but added special processing for catalina.home and catalina.base.(但为 catalina.home and catalina.base 添加了特殊的处理)
+        //  "${catalina.base}/lib","${catalina.base}/lib/*.jar","${catalina.home}/lib","${catalina.home}/lib/*.jar"
         String result = str;
         int pos_start = str.indexOf("${");
         if (pos_start >= 0) {
@@ -265,6 +269,10 @@ public final class Bootstrap {
             builder.append(str, pos_end + 1, str.length());
             result = builder.toString();
         }
+        //  "F:\Source\apache-tomcat-8.5.42-src\home/lib",
+        //  "F:\Source\apache-tomcat-8.5.42-src\home/lib/*.jar",
+        //  "F:\Source\apache-tomcat-8.5.42-src\home/lib",
+        //  "F:\Source\apache-tomcat-8.5.42-src\home/lib/*.jar"
         return result;
     }
 

@@ -144,18 +144,21 @@ public class Digester extends DefaultHandler2 {
 
 
     /**
+     * 当前元素的正文文本
      * The body text of the current element.
      */
     protected StringBuilder bodyText = new StringBuilder();
 
 
     /**
+     * 周围元素的正文文本字符串缓冲区堆栈
      * The stack of body text string buffers for surrounding elements.
      */
     protected ArrayStack<StringBuilder> bodyTexts = new ArrayStack<>();
 
 
     /**
+     * 其元素是 List 对象的堆栈,每个对象都包含从 Rules.getMatch() 返回的规则对象列表.输入输入中的每个 xml 元素时,匹配规则将推送到此堆栈上.到达结束标记后,将再次弹出匹配项.因此,堆栈的深度与输入 xml 的当前“嵌套”级别完全相同.
      * Stack whose elements are List objects, each containing a list of
      * Rule objects as returned from Rules.getMatch(). As each xml element
      * in the input is entered, the matching rules are pushed onto this
@@ -168,6 +171,7 @@ public class Digester extends DefaultHandler2 {
     protected ArrayStack<List<Rule>> matches = new ArrayStack<>(10);
 
     /**
+     * 用于实例化应用程序对象的类装入器。如果未指定，则根据 useContextClassLoader 变量的值使用上下文类装入器或用于装入 Digester 本身的类装入器。
      * The class loader to use for instantiating application objects.
      * If not specified, the context class loader, or the class loader
      * used to load Digester itself, is used, based on the value of the
@@ -295,6 +299,7 @@ public class Digester extends DefaultHandler2 {
 
 
     /**
+     * 警告缺少的属性和元素
      * Warn on missing attributes and elements.
      */
     protected boolean rulesValidation = false;
@@ -1576,10 +1581,10 @@ public class Digester extends DefaultHandler2 {
 
     /**
      * <p>Register a new Rule matching the specified pattern.(注册一个匹配指定模式的新规则)
-     * This method sets the <code>Digester</code> property on the rule.</p>
+     * This method sets the <code>Digester</code> property on the rule.</p>(此方法设置 Digester 规则上的摘要程序属性)
      *
      * @param pattern Element matching pattern
-     * @param rule Rule to be registered
+     * @param rule Rule to be registered(要注册的规则)
      */
     public void addRule(String pattern, Rule rule) {
 
@@ -1676,10 +1681,11 @@ public class Digester extends DefaultHandler2 {
     }
 
     /**
+     * 为指定的参数添加“对象创建”规则。
      * Add an "object create" rule for the specified parameters.
      *
-     * @param pattern Element matching pattern
-     * @param className Java class name to be created
+     * @param pattern Element matching pattern(元素匹配模式)
+     * @param className Java class name to be created(要创建的 Java 类名)
      * @see ObjectCreateRule
      */
     public void addObjectCreate(String pattern, String className) {
@@ -1724,6 +1730,7 @@ public class Digester extends DefaultHandler2 {
 
 
     /**
+     * 为指定参数添加“设置属性”规则。
      * Add a "set properties" rule for the specified parameters.
      *
      * @param pattern Element matching pattern
