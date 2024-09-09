@@ -11,12 +11,16 @@ import org.apache.juli.logging.LogFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class GroupChatServerNettyHandler extends SimpleChannelInboundHandler<String> {
 
     private static final Log log = LogFactory.getLog(GroupChatServerNettyHandler.class);
 
+    //点对点聊天
+    public static Map<String,Channel> map = new HashMap<String,Channel>();
 
     //定义一个handler组,管理所有的handler
     //GlobalEventExecutor.INSTANCE:是全局的事件唯一执行器,是一个单例
@@ -39,6 +43,7 @@ public class GroupChatServerNettyHandler extends SimpleChannelInboundHandler<Str
          */
         channelGroup.writeAndFlush("[客户端]" + channel.remoteAddress() + "加入聊天\n" + simpleDateFormat.format(new Date()) + "\n");
         channelGroup.add(channel);
+        map.put("id100",channel);
     }
 
     /**
