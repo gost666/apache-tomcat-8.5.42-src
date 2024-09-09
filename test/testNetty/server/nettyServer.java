@@ -1,6 +1,8 @@
 package testNetty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -9,6 +11,7 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.junit.Test;
 
+import java.nio.charset.Charset;
 
 
 public class nettyServer {
@@ -96,7 +99,7 @@ public class nettyServer {
         }
 
     }
-}
+
 
 
 
@@ -162,10 +165,50 @@ public class nettyServer {
     //NioEventLoopGroup提供了next接口,可以从组里面按照一定规则获取其中一个EventLoop来处理任务,在Netty服务器编程中,一般都是需要提供两个EventLoopGroup,如BossEventLoopGroup和WorkerEventLoopGroup
      //       通常一个服务端口即一个ServerSocketChannel对应一个Selector和一个EventLoop线程负责接收客户端连接并将SocketChannel交给WorkerEventLoopGroup进行IO处理
 
-    //Unpooled类:
-    //Netty提供一个专门用来操作缓冲区(Netty的数据容器)的工具类
 
+    /**
+     * Unpooled类:Netty提供一个专门用来操作缓冲区(Netty的数据容器)的工具类
+     */
+    @Test
+    public void testUnpooled() {
+        //1.创建对象,该对象包含一个数组arr,是一个byte[10]
+        //2.在Netty中,不需要使用flip()进行反转;底层维护了readIndex和writeIndex
+        ByteBuf buffer = Unpooled.buffer(10);
+        for (int i = 0; i < 10; i++) {
+            buffer.writeByte(i);
+        }
+        log.info("capacity=" + buffer.capacity());
+        //输出方法一
+        for (int i = 0; i < buffer.capacity(); i++) {
+            System.out.println(buffer.getByte(i));
+        }
+        //输出方法二
+        //for (int i = 0; i < buffer.capacity(); i++) {
+        //    System.out.println(buffer.readByte());
+        //}
+        log.info("执行完毕....");
+    }
 
+    @Test
+    public void testUnpooled2() {
+        ByteBuf buffer = Unpooled.copiedBuffer("hello,world!", Charset.forName("utf8"));
+        if (buffer.hasArray()) {
+            byte[] content = buffer.array();
+            System.out.println(new String(content, Charset.forName("utf-8")));
+            System.out.println("buffer.arrayOffset():" + buffer.arrayOffset());//0
+            System.out.println("buffer.readerIndex():" + buffer.readerIndex());//0
+            System.out.println("buffer.writerIndex():" + buffer.writerIndex());//12
+            System.out.println("buffer.capacity():" + buffer.capacity());
+            System.out.println("buffer.capacity():" + buffer.readableBytes());//可读的字节数
+            //取出各个字节数
+            for (int i = 0; i < buffer.readableBytes(); i++) {
+                System.out.println((char) buffer.getByte(i));
+            }
+            //取出某一段
+            System.out.println(buffer.getCharSequence(0, 4, Charset.forName("utf-8")));//hell
+        }
+    }
+}
 
 
 
