@@ -142,6 +142,13 @@ public class nettyServer {
     //ChannelHandler:
     //是一个接口,处理IO事件或拦截IO操作,并将其转发到其ChannelPipeline(业务处理链)中的下一个处理程序
     //ChannelHandler本身并没有提供很多方法,因为这个接口有许多方法需要实现,方便使用期间可以继承它的子类
+    /**
+     * ChannelHandler
+     *  充当了处理入站和出站(数据从 客户端 -> 服务端)数据的应用程序逻辑的容器,实现 ChannelInboundHandler接口(或ChannelInboundHandlerAdapter),就可以接收入站事件和数据
+     *  这些数据会被业务逻辑处理,当要给客户端发送响应时,也可以从 ChannelInboundHandler 冲刷数据,业务逻辑通常写在一个或多个 ChannelInboundHandler中
+     * ChannelInboundHandlerAdapter
+     *  和ChannelHandler原理一样,只不过用来处理出站数据的
+     */
 
     //Pipeline和ChannelPipeline:重点
     //ChannelPipeline是一个Handler集合,它负责处理和拦截inbound或者outbound事件和操作,相当于一个贯穿Netty的链(ChannelPipeline是保存ChannelHandler的list,用于处理或拦截Channel的入站事件和出站操作)
