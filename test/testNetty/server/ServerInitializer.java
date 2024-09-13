@@ -9,7 +9,8 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        pipeline.addLast(new ByteLongDecoder());
+        //pipeline.addLast(new ByteLongDecoder());
+        pipeline.addLast(new ByteLongDecoderSimple());
         pipeline.addLast(new ByteLongEncoder());//这是一个出站的编码器(出站Handler)
         pipeline.addLast(new ServerHandler());
     }
