@@ -2,9 +2,7 @@ package testNetty.client;
 
 import org.junit.Test;
 
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -61,5 +59,22 @@ public class NIOClient {
         long transferCount = fileChannel.transferTo(0, fileChannel.size(), socketChannel);
         System.out.println("发送总字节数:" + transferCount + ",耗时:" + (System.currentTimeMillis() - starTime));
         fileChannel.close();
+    }
+
+    @Test
+    public void testSocketClient() {
+        try {
+            Socket socket = new Socket("127.0.0.1", 9999);
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
+            while (true) {
+                String outMsg = bufferedReader.readLine();
+                bufferedWriter.write(outMsg);
+                bufferedWriter.write("\n");
+                bufferedWriter.flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

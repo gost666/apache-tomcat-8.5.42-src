@@ -13,8 +13,12 @@ import java.nio.channels.*;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class NIOServer {
+    private static final Logger log = Logger.getLogger("testNetty.server");
     /**
      * 1.每个Channel对应一个Buffer
      * 2.Selector对应一个线程,一个线程对应一个Channel(连接)
@@ -318,6 +322,45 @@ public class NIOServer {
                 break;
             }
             buffer.rewind();
+        }
+    }
+
+    @Test
+    public void testSocketServer() {
+        try {
+            ServerSocket serverSocket = new ServerSocket(9999);
+            Socket socket = serverSocket.accept();
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream(),"UTF-8"));
+            String msg;
+            while ((msg = bufferedReader.readLine()) != null) {
+                System.out.println("通过socket读取的数据信息:" + msg);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSocketServerMultiThread() throws IOException {
+        ServerSocket serverSocket = new ServerSocket(9999);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        while (true) {
+            Socket socket = serverSocket.accept();
+            Runnable runnable = () -> {
+                BufferedReader bufferedReader = null;
+                try {
+                    bufferedReader = new BufferedReader(
+                            new InputStreamReader(socket.getInputStream(), "UTF-8"));
+                    String msg;
+                    while ((msg = bufferedReader.readLine()) != null) {
+                        log.info("通过socket读取的数据信息:" + msg);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            };
+            executorService.submit(runnable);
         }
     }
 }
