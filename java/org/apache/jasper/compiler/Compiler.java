@@ -370,7 +370,7 @@ public abstract class Compiler {
         }
 
         try {
-            System.out.println("====>>37<<生成java文件====");
+            log.info("====>>37<<生成java文件====");
             /**
              * 1.如果在 web.xml中配置了参数 scratchdir ,则jsp编译后的结果,就会存储在该目录下
              * <init-param>
@@ -388,7 +388,7 @@ public abstract class Compiler {
             Long jspLastModified = ctxt.getLastModified(ctxt.getJspFile());
             javaFile.setLastModified(jspLastModified.longValue());
             if (compileClass) {
-                System.out.println("====>>38<<生成class文件====");
+                log.info("====>>38<<生成class文件====");
                 generateClass(smap);
                 // Fix for bugzilla 41606
                 // Set JspServletWrapper.servletClassLastModifiedTime after successful compile

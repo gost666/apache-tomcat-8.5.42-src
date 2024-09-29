@@ -17,6 +17,7 @@
 package org.apache.catalina.core;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +38,7 @@ import org.apache.tomcat.util.res.StringManager;
  * @author Craig R. McClanahan
  */
 final class StandardEngineValve extends ValveBase {
+    private static final Logger log = Logger.getLogger("org.apache.catalina.core.StandardEngineValve");
 
     //------------------------------------------------------ Constructor
     public StandardEngineValve() {
@@ -69,7 +71,7 @@ final class StandardEngineValve extends ValveBase {
     @Override
     public final void invoke(Request request, Response response)
         throws IOException, ServletException {
-        System.out.println("====>>25<<通过Pipeline调用StandardEngineValve====");
+        log.info("====>>25<<通过Pipeline调用StandardEngineValve====");
         // Select the Host to be used for this Request
         Host host = request.getHost();
         if (host == null) {

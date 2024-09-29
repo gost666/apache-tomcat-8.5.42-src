@@ -61,7 +61,7 @@ public class CatalinaProperties {
      */
     private static void loadProperties() {
 
-        System.out.println("====>><<加载catalina.properties配置文件====");
+        log.info("====>><<加载catalina.properties配置文件====");
         InputStream is = null;
         try {
             String configUrl = System.getProperty("catalina.config");
@@ -244,7 +244,7 @@ public class CatalinaProperties {
          *   <code>false</code> otherwise.
          */
         while (enumeration.hasMoreElements()) {
-            System.out.println("====>><<依次遍历 catalina.properties 中所有的属性=="+enumeration.nextElement());
+            log.info("====>><<依次遍历 catalina.properties 中所有的属性=="+enumeration.nextElement());
             String name = (String) enumeration.nextElement();
             String value = properties.getProperty(name);
             if (value != null) {

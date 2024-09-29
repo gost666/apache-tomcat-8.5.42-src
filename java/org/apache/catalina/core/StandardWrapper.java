@@ -749,7 +749,7 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public Servlet allocate() throws ServletException {
-        System.out.println("====>>29<<通过调用 wrapper.allocate() 获取 servlet");
+        log.info("====>>29<<通过调用 wrapper.allocate() 获取 servlet");
         // If we are currently unloading this servlet, throw an exception
         if (unloading) {
             throw new ServletException(sm.getString("standardWrapper.unloading", getName()));

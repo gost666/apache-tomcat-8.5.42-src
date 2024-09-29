@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpUpgradeHandler;
 
@@ -43,6 +44,7 @@ import org.apache.tomcat.util.net.SocketWrapperBase;
 import org.apache.tomcat.util.res.StringManager;
 
 public abstract class AbstractHttp11Protocol<S> extends AbstractProtocol<S> {
+    private static final Logger log = Logger.getLogger("org.apache.coyote.http11.AbstractHttp11Protocol");
 
     protected static final StringManager sm =
             StringManager.getManager(AbstractHttp11Protocol.class);
@@ -61,7 +63,7 @@ public abstract class AbstractHttp11Protocol<S> extends AbstractProtocol<S> {
 
     @Override
     public void init() throws Exception {
-        System.out.println("====>>7<<ProtocolHandler.init()====");
+        log.info("====>>7<<ProtocolHandler.init()====");
         for (UpgradeProtocol upgradeProtocol : upgradeProtocols) {
             configureUpgradeProtocol(upgradeProtocol);
         }

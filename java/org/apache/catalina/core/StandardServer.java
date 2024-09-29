@@ -781,7 +781,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      */
     @Override
     protected void startInternal() throws LifecycleException {
-        System.out.println("====>>12<<Server.start()====");
+        log.info("====>>12<<Server.start()====");
         fireLifecycleEvent(CONFIGURE_START_EVENT, null);
         setState(LifecycleState.STARTING);
 
@@ -825,7 +825,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      */
     @Override
     protected void initInternal() throws LifecycleException {
-        System.out.println("====>>5<<Server.init()====");
+        log.info("====>>5<<Server.init()====");
         super.initInternal();
 
         // Register global String cache

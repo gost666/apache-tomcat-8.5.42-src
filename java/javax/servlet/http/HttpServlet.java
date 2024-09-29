@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.GenericServlet;
@@ -73,6 +74,7 @@ import javax.servlet.ServletResponse;
  * information on handling multiple threads in a Java program.
  */
 public abstract class HttpServlet extends GenericServlet {
+    private static final Logger log = Logger.getLogger("javax.servlet.http.HttpServlet");
 
     private static final long serialVersionUID = 1L;
 
@@ -623,7 +625,7 @@ public abstract class HttpServlet extends GenericServlet {
      */
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
-        System.out.println("====>>31<<根据获取到请求的方法执行不同的方法====");
+        log.info("====>>31<<根据获取到请求的方法执行不同的方法====");
         String method = req.getMethod();
 
         if (method.equals(METHOD_GET)) {

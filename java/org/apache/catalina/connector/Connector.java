@@ -967,7 +967,7 @@ public class Connector extends LifecycleMBeanBase  {
 
     @Override
     protected void initInternal() throws LifecycleException {
-        System.out.println("====>>6.3<<connector.init()====");
+        log.info("====>>6.3<<connector.init()====");
         super.initInternal();
 
         // Initialize adapter
@@ -1010,7 +1010,7 @@ public class Connector extends LifecycleMBeanBase  {
      */
     @Override
     protected void startInternal() throws LifecycleException {
-        System.out.println("====>>13.4<<Connector.start()====");
+        log.info("====>>13.4<<Connector.start()====");
         // Validate settings before starting
         if (getPort() < 0) {
             throw new LifecycleException(sm.getString(

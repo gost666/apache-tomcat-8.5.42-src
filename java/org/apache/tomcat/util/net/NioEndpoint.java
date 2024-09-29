@@ -211,7 +211,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
      */
     @Override
     public void bind() throws Exception {
-        System.out.println("====>>9<<Endpoint.bind() 进行Socket连接====");
+        log.info("====>>9<<Endpoint.bind() 进行Socket连接====");
         if (!getUseInheritedChannel()) {
             serverSock = ServerSocketChannel.open();
             socketProperties.setProperties(serverSock.socket());
@@ -251,7 +251,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
      */
     @Override
     public void startInternal() throws Exception {
-        System.out.println("====>>16<<Endpoint.start()====");
+        log.info("====>>16<<Endpoint.start()====");
         if (!running) {
             running = true;
             paused = false;
@@ -450,7 +450,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
 
         @Override
         public void run() {
-            System.out.println("====>>17<<Nio Socket绑定端口:"+getPort()+";接收请求====");
+            log.info("====>>17<<Nio Socket绑定端口:"+getPort()+";接收请求====");
             int errorDelay = 0;
 
             // Loop until we receive a shutdown command
@@ -479,7 +479,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                     try {
                         // Accept the next incoming connection from the server
                         // socket
-                        System.out.println("====>>18<<访问 http://localhost:8080/servlet/bbs/findAll====");
+                        log.info("====>>18<<访问 http://localhost:8080/servlet/bbs/findAll====");
                         socket = serverSock.accept();//接收客户端请求
                     } catch (IOException ioe) {
                         // We didn't get a socket
@@ -882,7 +882,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                             boolean closeSocket = false;
                             // Read goes before write
                             if (sk.isReadable()) {
-                                System.out.println("====>>19<<进行请求的处理====");
+                                log.info("====>>19<<进行请求的处理====");
                                 if (!processSocket(attachment, SocketEvent.OPEN_READ, true)) {
                                     closeSocket = true;
                                 }
@@ -1463,7 +1463,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                 int handshake = -1;
 
                 try {
-                    System.out.println("====>>21<<进行TCP三次握手进行请求之前的确认====");
+                    log.info("====>>21<<进行TCP三次握手进行请求之前的确认====");
                     if (key != null) {
                         if (socket.isHandshakeComplete()) {
                             // No TLS handshaking required. Let the handler
@@ -1498,7 +1498,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                     if (event == null) {
                         state = getHandler().process(socketWrapper, SocketEvent.OPEN_READ);
                     } else {
-                        System.out.println("====>>22<<进行请求处理====");
+                        log.info("====>>22<<进行请求处理====");
                         state = getHandler().process(socketWrapper, event);
                     }
                     if (state == SocketState.CLOSED) {

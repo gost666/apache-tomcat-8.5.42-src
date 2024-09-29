@@ -104,7 +104,7 @@ final class StandardHostValve extends ValveBase {
     @Override
     public final void invoke(Request request, Response response)
         throws IOException, ServletException {
-        System.out.println("====>>26<<通过Pipeline调用StandardHostValve====");
+        log.info("====>>26<<通过Pipeline调用StandardHostValve====");
         // Select the Context to be used for this Request
         Context context = request.getContext();
         if (context == null) {

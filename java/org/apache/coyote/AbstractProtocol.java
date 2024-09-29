@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanRegistration;
@@ -48,6 +49,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 public abstract class AbstractProtocol<S> implements ProtocolHandler,
         MBeanRegistration {
+    private static final Logger log = Logger.getLogger("org.apache.coyote.AbstractProtocol");
 
     /**
      * The string manager for this package.
@@ -584,7 +586,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
 
     @Override
     public void start() throws Exception {
-        System.out.println("====>>14<<ProtocolHandler.start()====");
+        log.info("====>>14<<ProtocolHandler.start()====");
         if (getLog().isInfoEnabled()) {
             getLog().info(sm.getString("abstractProtocolHandler.start", getName()));
         }

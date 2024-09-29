@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Logger;
 
 import org.apache.juli.logging.Log;
 import org.apache.tomcat.util.net.AbstractEndpoint.Handler.SocketState;
@@ -33,6 +34,7 @@ import org.apache.tomcat.util.net.SocketWrapperBase;
  * processors to the HTTP/AJP processors.
  */
 public abstract class AbstractProcessorLight implements Processor {
+    private static final Logger log = Logger.getLogger("org.apache.coyote.AbstractProcessorLight");
 
     private Set<DispatchType> dispatches = new CopyOnWriteArraySet<>();
 
@@ -40,7 +42,7 @@ public abstract class AbstractProcessorLight implements Processor {
     @Override
     public SocketState process(SocketWrapperBase<?> socketWrapper, SocketEvent status)
             throws IOException {
-        System.out.println("====>>22.1<<Processor组件读取消息报文,解析请求行、请求体、封装成Request对象====");
+        log.info("====>>22.1<<Processor组件读取消息报文,解析请求行、请求体、封装成Request对象====");
         SocketState state = SocketState.CLOSED;
         Iterator<DispatchType> dispatches = null;
         do {

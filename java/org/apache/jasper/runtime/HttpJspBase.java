@@ -18,6 +18,7 @@
 package org.apache.jasper.runtime;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -34,6 +35,7 @@ import org.apache.jasper.compiler.Localizer;
  * @author Anil K. Vijendran
  */
 public abstract class HttpJspBase extends HttpServlet implements HttpJspPage {
+    private static final Logger log = Logger.getLogger("org.apache.jasper.runtime.HttpJspBase");
 
     private static final long serialVersionUID = 1L;
 
@@ -42,8 +44,7 @@ public abstract class HttpJspBase extends HttpServlet implements HttpJspPage {
 
     @Override
     public final void init(ServletConfig config)
-        throws ServletException
-    {
+            throws ServletException {
         super.init(config);
         jspInit();
         _jspInit();
@@ -65,9 +66,8 @@ public abstract class HttpJspBase extends HttpServlet implements HttpJspPage {
      */
     @Override
     public final void service(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException
-    {
-        System.out.println("====>><<调用生成的servlet中的_jspService方法====");
+            throws ServletException, IOException {
+        log.info("====>><<调用生成的servlet中的_jspService方法====");
         _jspService(request, response);
     }
 
@@ -88,5 +88,5 @@ public abstract class HttpJspBase extends HttpServlet implements HttpJspPage {
     @Override
     public abstract void _jspService(HttpServletRequest request,
                                      HttpServletResponse response)
-        throws ServletException, IOException;
+            throws ServletException, IOException;
 }

@@ -19,6 +19,7 @@ package org.apache.catalina.core;
 
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import org.apache.catalina.Executor;
 import org.apache.catalina.LifecycleException;
@@ -31,6 +32,7 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
 public class StandardThreadExecutor extends LifecycleMBeanBase
         implements Executor, ResizableExecutor {
+    private static final Logger log = Logger.getLogger("org.apache.catalina.core.StandardThreadExecutor");
 
     // ---------------------------------------------- Properties
     /**
@@ -116,7 +118,7 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
     @Override
     protected void startInternal() throws LifecycleException {
 
-        System.out.println("====>>13.2<<Executor.start()====");
+        log.info("====>>13.2<<Executor.start()====");
         taskqueue = new TaskQueue(maxQueueSize);
         TaskThreadFactory tf = new TaskThreadFactory(namePrefix,daemon,getThreadPriority());
         executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(), maxIdleTime, TimeUnit.MILLISECONDS,taskqueue, tf);

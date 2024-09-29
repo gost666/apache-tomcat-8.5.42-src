@@ -32,6 +32,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
@@ -58,6 +59,7 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
 
 public abstract class AbstractEndpoint<S> {
+    private static final Logger log = Logger.getLogger("org.apache.tomcat.util.net.AbstractEndpoint");
 
     // -------------------------------------------------------------- Constants
 
@@ -1079,7 +1081,7 @@ public abstract class AbstractEndpoint<S> {
             }
             Executor executor = getExecutor();
             if (dispatch && executor != null) {
-                System.out.println("====>>20<<将连接交给线程池Executor处理,开始执行请求响应任务====");
+                log.info("====>>20<<将连接交给线程池Executor处理,开始执行请求响应任务====");
                 executor.execute(sc);
             } else {
                 sc.run();
@@ -1117,7 +1119,7 @@ public abstract class AbstractEndpoint<S> {
     public abstract void stopInternal() throws Exception;
 
     public void init() throws Exception {
-        System.out.println("====>>8<<Endpoint.init()====");
+        log.info("====>>8<<Endpoint.init()====");
         if (bindOnInit) {
             bind();
             bindState = BindState.BOUND_ON_INIT;
@@ -1191,7 +1193,7 @@ public abstract class AbstractEndpoint<S> {
 
 
     public final void start() throws Exception {
-        System.out.println("====>>15<<Endpoint.start()====");
+        log.info("====>>15<<Endpoint.start()====");
         if (bindState == BindState.UNBOUND) {
             bind();
             bindState = BindState.BOUND_ON_START;

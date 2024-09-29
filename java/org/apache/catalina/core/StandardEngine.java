@@ -239,7 +239,7 @@ public class StandardEngine extends ContainerBase implements Engine {
     protected void initInternal() throws LifecycleException {
         // Ensure that a Realm is present before any attempt is made to start
         // one. This will create the default NullRealm if necessary.
-        System.out.println("====>>6.1<<engine.init()====");
+        log.info("====>>6.1<<engine.init()====");
         getRealm();
         super.initInternal();
     }
@@ -254,7 +254,7 @@ public class StandardEngine extends ContainerBase implements Engine {
      */
     @Override
     protected synchronized void startInternal() throws LifecycleException {
-        System.out.println("====>>13.1<<Engine.start()====");
+        log.info("====>>13.1<<Engine.start()====");
         // Log our server identification information
         if(log.isInfoEnabled())
             log.info( "Starting Servlet Engine: " + ServerInfo.getServerInfo());

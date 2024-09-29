@@ -21,6 +21,7 @@ package org.apache.catalina.core;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.RequestDispatcher;
@@ -50,6 +51,7 @@ import org.apache.tomcat.util.res.StringManager;
  */
 final class StandardWrapperValve
     extends ValveBase {
+    private static final Logger log = Logger.getLogger("org.apache.catalina.core.StandardWrapperValve");
 
     //------------------------------------------------------ Constructor
     public StandardWrapperValve() {
@@ -92,7 +94,7 @@ final class StandardWrapperValve
     @Override
     public final void invoke(Request request, Response response)
         throws IOException, ServletException {
-        System.out.println("====>>28<<通过Pipeline调用StandardWrapperValve====");
+        log.info("====>>28<<通过Pipeline调用StandardWrapperValve====");
         // Initialize local variables we may need
         boolean unavailable = false;
         Throwable throwable = null;
@@ -169,7 +171,7 @@ final class StandardWrapperValve
         request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR,
                 requestPathMB);
         // Create the filter chain for this request
-        System.out.println("====>>30<<<<将获取到的Servlet封装到ApplicationFilterChain对象中====");
+        log.info("====>>30<<<<将获取到的Servlet封装到ApplicationFilterChain对象中====");
         ApplicationFilterChain filterChain =
                 ApplicationFilterFactory.createFilterChain(request, wrapper, servlet);
 
